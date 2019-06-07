@@ -1,6 +1,6 @@
 #include <ctype.h>
-#include <lauxlib.h>
-#include <lua.h>
+#include "lauxlib.h"
+#include "lua.h"
 #include <stdlib.h>
 #include <string.h>
 #include <zlib.h>
