@@ -7,7 +7,7 @@ package.path  = src_dir .. "?.lua;" .. package.path
 package.cpath = build_dir .. "?.so;" .. package.cpath
 
 local tap   = require("tap")
-local lz    = require("zlib")
+local lz    = require("zlib.c")
 local ok    = tap.ok
 local table = require("table")
 local io    = require("io")
