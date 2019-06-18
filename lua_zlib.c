@@ -1239,20 +1239,6 @@ static int lz_crc32(lua_State *L) {
     return lz_checksum_new(L, crc32, crc32_combine);
 }
 
-
-static const luaL_Reg zlib_functions[] = {
-    { "deflate", lz_deflate_new },
-    { "inflate", lz_inflate_new },
-    { "adler32", lz_adler32     },
-    { "crc32",   lz_crc32       },
-#ifdef LZLIB_COMPAT
-    { "compress",   lzlib_compress   },
-    { "decompress", lzlib_decompress },
-#endif
-    { "version", lz_version     },
-    { NULL,      NULL           }
-};
-
 #define SETLITERAL(n,v) (lua_pushliteral(L, n), lua_pushliteral(L, v), lua_settable(L, -3))
 #define SETINT(n,v) (lua_pushliteral(L, n), lua_pushinteger(L, v), lua_settable(L, -3))
 
@@ -1260,7 +1246,20 @@ LUALIB_API int luaopen_zlib_c(lua_State * const L) {
     lz_create_deflate_mt(L);
     lz_create_inflate_mt(L);
 
-    luaL_register(L, "zlib", zlib_functions);
+    luaL_Reg l[] = {
+        { "deflate", lz_deflate_new },
+        { "inflate", lz_inflate_new },
+        { "adler32", lz_adler32     },
+        { "crc32",   lz_crc32       },
+#ifdef LZLIB_COMPAT
+        { "compress",   lzlib_compress   },
+        { "decompress", lzlib_decompress },
+#endif
+        { "version", lz_version     },
+        { NULL,      NULL           }
+    };
+
+    luaL_newlib(L, l);
 
     SETINT("BEST_SPEED", Z_BEST_SPEED);
     SETINT("BEST_COMPRESSION", Z_BEST_COMPRESSION);
